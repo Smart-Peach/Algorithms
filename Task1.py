@@ -9,7 +9,9 @@ def find_factor(div, sor):
     return count, res
 
 
-def div_column(dividend, n, divisor, m):
+def div_column(dividend, divisor):
+    n = len(str(dividend))
+    m = len(str(divisor))
     if divisor == 0:
         raise ZeroDivisionError
     result = 0
@@ -38,4 +40,4 @@ def div_column(dividend, n, divisor, m):
 
 x = 25657
 y = 3791
-div_column(x, 5, y, 4)
+div_column(x, y)

@@ -4,13 +4,13 @@ def search(nums, target):
 
     while l < r:
         middle = l + (r - l) // 2
-        if nums[middle] > target:
-            r = middle
+        if nums[middle] == target:
+            return middle
         elif nums[middle] < target:
             l = middle + 1
         else:
-            return middle
+            r = middle
     return -1
 
 
-print(search([-1, 0, 3, 5, 9, 12], 0))
+print(search([5], 5))
