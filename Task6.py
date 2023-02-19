@@ -37,12 +37,9 @@ def merge_sort(a, p, r):
 
 def special_sort(nums):
     arr = merge_sort(nums, 0, len(nums) - 1)  # отсортированный
-    print(arr)
     middle = len(nums) // 2
     arr_greater, arr_less = arr[:middle], arr[middle:]  # Делим на два массива
-    print(arr_less, arr_greater)
     k, j = 0, 0
-    print(arr)
     for i in range(len(arr)):
         if i % 2 == 0:
             nums[i] = arr_less[k]
