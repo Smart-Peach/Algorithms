@@ -10,14 +10,14 @@ def insertion_sort_k(arr, start, k):
 
 def shell_sort(arr):
     size = len(arr)
-    sub_arr_len = (2 * size + 1) // 3
+    sub_arr_len = int((2 * size + 1) ** (1/3))
     flag = 1
     while sub_arr_len > 0 and flag:
         if sub_arr_len == 1:
             flag = 0
         for start in range(sub_arr_len):
             insertion_sort_k(arr, start, sub_arr_len)
-        sub_arr_len = (2 * sub_arr_len + 1) // 3
+        sub_arr_len = int((2 * sub_arr_len + 1) ** (1/3))
 
 
 def hIndex(citations):
