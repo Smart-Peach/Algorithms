@@ -9,7 +9,7 @@ def merge(a, p, q, r):
     i, j = 0, 0
     k = p
     while i < n1 and j < n2:
-        if b[i] <= c[j]:
+        if b[i] >= c[j]:
             a[k] = b[i]
             i += 1
         else:
@@ -32,17 +32,26 @@ def merge_sort(a, p, r):
         merge_sort(a, p, q)
         merge_sort(a, q + 1, r)
         merge(a, p, q, r)
+    return a
 
 
-def special_sort(list):
-    merge_sort(list, 0, len(list) - 1)
-    middle = len(list) // 2
-    result = []
-    for i in range(middle):
-        result.append(list[i])
-        result.append(list[i + middle])
-    return result
+def special_sort(nums):
+    arr = merge_sort(nums, 0, len(nums) - 1)  # отсортированный
+    print(arr)
+    middle = len(nums) // 2
+    arr_greater, arr_less = arr[:middle], arr[middle:]  # Делим на два массива
+    print(arr_less, arr_greater)
+    k, j = 0, 0
+    print(arr)
+    for i in range(len(arr)):
+        if i % 2 == 0:
+            nums[i] = arr_less[k]
+            k += 1
+        else:
+            nums[i] = arr_greater[j]
+            j += 1
 
 
-l = [1, 3, 2, 2, 3, 1]
-print(special_sort(l))
+l = [5, 5, 5, 4, 4, 4, 4]
+special_sort(l)
+print(l)
