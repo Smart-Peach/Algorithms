@@ -8,8 +8,8 @@ def binary_search(commits, repository, command):
     middle = 0
     while l < r:
         middle = l + (r - l) // 2
-        subprocess.run(['git', 'checkout', commits[middle]])
-        output = subprocess.run(['python', repository + command])
+        subprocess.run(['git', 'checkout', commits[middle]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)  # Переключаемся на нужный коммит
+        output = subprocess.run(['python', repository + command], stdout=subprocess.PIPE, stderr=subprocess.PIPE)  # Получаем результат запуска
         if output.returncode == 0:
             r = middle
         else:
@@ -25,9 +25,10 @@ def git_bisect(repository, start, finish, command):
     finish_ind = commits.index(finish)
     suitable_commits = commits[finish_ind:start_ind]
     result = binary_search(suitable_commits, repository, command)
-    print("result: ", result)
+    return result
 
 
 start = 'f3edc5d'
 finish = '708a9ff'
-git_bisect('C:\\Users\\Home\\Desktop\\PYTHON\\Testing', start, finish, '\\main.py')
+a = git_bisect('C:\\Users\\Home\\Desktop\\PYTHON\\Testing', start, finish, '\\main.py')
+print("result: ", a)
