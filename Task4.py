@@ -18,6 +18,7 @@ def binary_search(commits, repository, command):
 
 
 def git_bisect(repository, start, finish, command):
+    home = os.getcwd()
     os.chdir(repository)
     commits = subprocess.check_output(
         ['git', 'log', start, finish, '--pretty=format:%h']).decode("utf-8").split('\n')
@@ -25,6 +26,7 @@ def git_bisect(repository, start, finish, command):
     finish_ind = commits.index(finish)
     suitable_commits = commits[finish_ind:start_ind]
     result = binary_search(suitable_commits, repository, command)
+    os.chdir(home)
     return result
 
 

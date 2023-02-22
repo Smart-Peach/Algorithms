@@ -35,7 +35,7 @@ def merge_sort(a, p, r):
     return a
 
 
-def special_sort(nums):
+def wiggle_sort(nums):
     arr = merge_sort(nums, 0, len(nums) - 1)  # отсортированный
     middle = len(nums) // 2
     arr_greater, arr_less = arr[:middle], arr[middle:]  # Делим на два массива
@@ -50,5 +50,5 @@ def special_sort(nums):
 
 
 l = [5, 5, 5, 4, 4, 4, 4]
-special_sort(l)
+wiggle_sort(l)
 print(l)

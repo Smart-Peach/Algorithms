@@ -10,14 +10,17 @@ def insertion_sort_k(arr, start, k):
 
 def shell_sort(arr):
     size = len(arr)
-    sub_arr_len = int((2 * size + 1) ** (1/3))
-    flag = 1
-    while sub_arr_len > 0 and flag:
-        if sub_arr_len == 1:
-            flag = 0
-        for start in range(sub_arr_len):
-            insertion_sort_k(arr, start, sub_arr_len)
-        sub_arr_len = int((2 * sub_arr_len + 1) ** (1/3))
+    k = i = 0
+    sub_arr_len = []
+    while k < size:
+        k = (3 ** i - 1) // 2
+        i += 1
+        sub_arr_len.insert(0, k)
+    sub_arr_len.pop(0)
+
+    for k in sub_arr_len:
+        for start in range(k):
+            insertion_sort_k(arr, start, k)
 
 
 def hIndex(citations):
@@ -31,5 +34,5 @@ def hIndex(citations):
             return i + 1
 
 
-list = [11, 15]
+list = [3, 0, 6, 1, 5]
 print(hIndex(list))
