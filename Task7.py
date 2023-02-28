@@ -1,46 +1,56 @@
-def swap(array, ind1, ind2):
-    const = array[ind1]
-    array[ind1] = array[ind2]
-    array[ind2] = const
-
-
-def merge(a, p, q, r):
-    n1 = q - p + 1
-    n2 = r - q
-    b, c = [], []
-    for i in range(n1):
-        b.append(a[p + i])
-    for j in range(n2):
-        c.append(a[q + j + 1])
-    i, j = 0, 0
-    k = p
-    while i < n1 and j < n2:
-        if b[i] <= c[j]:
-            a[k] = b[i]
+def merge(arr, start1, end1, start2, end2):
+    lsize = end1 - start1 + 1
+    rsize = end2 - start2 + 1
+    i = j = 0
+    while i < lsize and j < rsize:
+        if arr[start1 + i] <= arr[start2 + j]:
             i += 1
+            # res[k] = arr[start1 + i]
+            # k += 1
+            # i += 1
         else:
-            a[k] = c[j]
+            val = arr[start2 + j]
+            place = start2 + j
+
+            while place != (start1 + i):
+                arr[place] = arr[place - 1]
+                place -= 1
+            arr[start1 + i] = val
+
+            i += 1
+            lsize += 1
             j += 1
-        k += 1
-    while i < n1:
-        a[k] = b[i]
-        i += 1
-        k += 1
-    while j < n2:
-        a[k] = c[j]
-        k += 1
-        j += 1
+            # res[k] = arr[start2 + j]
+            # k += 1
+            # j += 1
+
+    # while i < lsize:
+    #     res[k] = arr[start1 + i]
+    #     k += 1
+    #     i += 1
+    # while j < rsize:
+    #     res[k] = arr[start2 + j]
+    #     k += 1
+    #     j += 1
 
 
-def merge_sort(array, p, r):
-    if p < r:
-        q = (p + r) // 2
-        merge_sort(array, p, q)
-        merge_sort(array, q + 1, r)
-        merge(array, p, q, r)
+def merge_sort(array, start, end):
+
+    if start < end:
+        middle = start + (end - start) // 2
+
+        merge_sort(array, start, middle)
+        merge_sort(array, middle + 1, end)
+
+        # buffer = [None] * (end - start + 1)
+
+        merge(array, start, middle, middle + 1, end)
+
+        # for i in range(len(buffer)):
+        #     array[start + i] = buffer[i]
 
 
-l = [5, 6, 78, 0, 1, 89, 25, 4, 6, 8]
-size = len(l) - 1
-merge_sort(l, 0, size)
-print(l)
+arr = [10, 30, 14, 11, 16, 7, 28]
+size = len(arr) - 1
+merge_sort(arr, 0, size)
+print(arr)
