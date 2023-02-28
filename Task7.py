@@ -1,4 +1,4 @@
-def swap_elements(array, ind1, ind2):
+def swap(array, ind1, ind2):
     const = array[ind1]
     array[ind1] = array[ind2]
     array[ind2] = const

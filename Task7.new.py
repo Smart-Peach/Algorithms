@@ -1,42 +1,56 @@
-def mergeSort(arr):
-    if len(arr) > 1:
-
-        # Create sub_array2 ← A[start..mid] and sub_array2 ← A[mid+1..end]
-        mid = len(arr) // 2
-        sub_array1 = arr[:mid]
-        sub_array2 = arr[mid:]
-
-        # Sort the two halves
-        mergeSort(sub_array1)
-        mergeSort(sub_array2)
-
-        # Initial values for pointers that we use to keep track of where we are in each array
-        i = j = k = 0
-
-        # Until we reach the end of either start or end, pick larger among
-        # elements start and end and place them in the correct position in the sorted array
-        while i < len(sub_array1) and j < len(sub_array2):
-            if sub_array1[i] <= sub_array2[j]:
-                arr[k] = sub_array1[i]
-                i += 1
-            else:
-                arr[k] = sub_array2[j]
-                j += 1
-            k += 1
-
-        # When all elements are traversed in either arr1 or arr2,
-        # pick up the remaining elements and put in sorted array
-        while i < len(sub_array1):
-            arr[k] = sub_array1[i]
+def merge(arr, start1, end1, start2, end2):
+    lsize = end1 - start1 + 1
+    rsize = end2 - start2 + 1
+    i = j = 0
+    while i < lsize and j < rsize:
+        if arr[start1 + i] <= arr[start2 + j]:
             i += 1
-            k += 1
+            # res[k] = arr[start1 + i]
+            # k += 1
+            # i += 1
+        else:
+            val = arr[start2 + j]
+            place = start2 + j
 
-        while j < len(sub_array2):
-            arr[k] = sub_array2[j]
+            while place != (start1 + i):
+                arr[place] = arr[place - 1]
+                place -= 1
+            arr[start1 + i] = val
+
+            i += 1
+            lsize += 1
             j += 1
-            k += 1
+            # res[k] = arr[start2 + j]
+            # k += 1
+            # j += 1
+
+    # while i < lsize:
+    #     res[k] = arr[start1 + i]
+    #     k += 1
+    #     i += 1
+    # while j < rsize:
+    #     res[k] = arr[start2 + j]
+    #     k += 1
+    #     j += 1
 
 
-arr = [10, 9, 2, 4, 6, 13]
-mergeSort(arr)
+def merge_sort(array, start, end):
+
+    if start < end:
+        middle = start + (end - start) // 2
+
+        merge_sort(array, start, middle)
+        merge_sort(array, middle + 1, end)
+
+        # buffer = [None] * (end - start + 1)
+
+        merge(array, start, middle, middle + 1, end)
+
+        # for i in range(len(buffer)):
+        #     array[start + i] = buffer[i]
+
+
+arr = [10, 30, 14, 11, 16, 7, 28]
+size = len(arr) - 1
+merge_sort(arr, 0, size)
 print(arr)
