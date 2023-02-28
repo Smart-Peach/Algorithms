@@ -35,7 +35,6 @@ def merge(arr, start1, end1, start2, end2):
 
 
 def merge_sort(array, start, end):
-
     if start < end:
         middle = start + (end - start) // 2
 
@@ -50,7 +49,7 @@ def merge_sort(array, start, end):
         #     array[start + i] = buffer[i]
 
 
-arr = [10, 30, 14, 11, 16, 7, 28]
+arr = [5, 2, 3, 1]
 size = len(arr) - 1
 merge_sort(arr, 0, size)
 print(arr)
