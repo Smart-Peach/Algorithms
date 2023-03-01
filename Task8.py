@@ -49,7 +49,7 @@ def count_local_inversions(array):
     return count
 
 
-def inversions(arr):
+def inversions_merge(arr):
     local_inversions = count_local_inversions(arr)
     global_inversions = merge_sort(arr, 0, len(arr) - 1)
     if global_inversions == local_inversions:
@@ -57,6 +57,13 @@ def inversions(arr):
     return False
 
 
+def inversions(nums):
+    for i in range(len(nums)):
+        if i - nums[i] > 1 or i - nums[i] < -1:
+            return False
+    return True
+
+
 l = [1, 2, 0]
 size = len(l) - 1
-print(inversions(l))
+print(inversions_merge(l))
