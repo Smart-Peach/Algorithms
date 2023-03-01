@@ -1,33 +1,62 @@
-def count_split_inversions(arr, start1, end1, start2, end2) -> int:
-    res = 0
-    lsize = end1 - start1 + 1
-    rsize = end2 - start2 + 1
-    print(f"sizes: {lsize}, {rsize}")
-    i = j = 0
-    while i < lsize and j < rsize:
-        if arr[start1 + i] > arr[start2 + j]:
-            res += 1
+def merge(a, p, q, r):
+    n1 = q - p + 1
+    n2 = r - q
+    b, c = [], []
+    for i in range(n1):
+        b.append(a[p + i])
+    for j in range(n2):
+        c.append(a[q + j + 1])
+
+    count_gl = 0
+    i, j = 0, 0
+    k = p
+    while i < n1 and j < n2:
+        if b[i] <= c[j]:
+            a[k] = b[i]
+            i += 1
+        else:
+            a[k] = c[j]
+            j += 1
+            count_gl += len(b) - i
+        k += 1
+    while i < n1:
+        a[k] = b[i]
         i += 1
+        k += 1
+    while j < n2:
+        a[k] = c[j]
+        k += 1
         j += 1
-    return res
+        count_gl += len(b) - i
+    return count_gl
 
 
-def count_inversions(nums, start, end) -> int:
-    print(start, end)
-    print(nums[start:end])
-    if (end - start) == 0:
-        print("!!!")
-        return 0
-    if start < end:
-        middle = len(nums) // 2
-        print(f"indexes: {start}, {middle}, {middle + 1}, {end}")
-        left = count_inversions(nums, start, middle)
-        right = count_inversions(nums, middle + 1, end)
-
-        split = count_split_inversions(nums, start, middle, middle + 1, end)
-        print(f"adds: {left}, {right}, {split}")
-        return left + right + split
+def merge_sort(array, p, r) -> int:
+    res_gl = 0
+    if p < r:
+        q = (p + r) // 2
+        res_gl += merge_sort(array, p, q)
+        res_gl += merge_sort(array, q + 1, r)
+        res_gl += merge(array, p, q, r)
+    return res_gl
 
 
-l = [1, 0, 2]
-print(f"answer: {count_inversions(l, 0, len(l) - 1)}")
+def count_local_inversions(array):
+    count = 0
+    for i in range(len(array) - 1):
+        if array[i] > array[i + 1]:
+            count += 1
+    return count
+
+
+def inversions(arr):
+    local_inversions = count_local_inversions(arr)
+    global_inversions = merge_sort(arr, 0, len(arr) - 1)
+    if global_inversions == local_inversions:
+        return True
+    return False
+
+
+l = [1, 2, 0]
+size = len(l) - 1
+print(inversions(l))
