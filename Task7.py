@@ -1,3 +1,13 @@
+def insertion_sort(arr, start):
+    for j in range(len(arr)):
+        key = arr[j]
+        i = j - 1
+        while i >= 0 and arr[i] < key:
+            arr[i + 1] = arr[i]
+            i -= 1
+        arr[i + 1] = key
+
+
 def swap(array, ind1, ind2):
     # print(f"in swap:{array}, {ind1}, {ind2}")
     const = array[ind1]
@@ -53,7 +63,7 @@ def sort_half(array, start, end, buff_start, initial_length):
         # if start != 0 or end != buff_start - 1:
 
         print(f"initial length: {initial_length}, start-end: {abs(start - end)}")
-        if abs(end - start) != initial_length:
+        if abs(end - start + 1) != initial_length:
             for i in range(end - start + 1):
                 swap(array, start + i, buff_start + i)
             # array[start + i] = buffer[i]
@@ -62,7 +72,7 @@ def sort_half(array, start, end, buff_start, initial_length):
 
 def good_length(start, end):
     middle = start + (end - start) // 2
-    if (end - start) % 2 != 0:
+    if (end - start + 1) % 2 != 0:
         middle -= 1
     return middle
 
@@ -70,21 +80,29 @@ def good_length(start, end):
 def merge_sort(array, start, end):
     # main_middle = good_length(array, start, end)
     main_middle = start + (end - start) // 2
-    sort_half(array, start, main_middle, main_middle + 1, main_middle - start)  # Сортируем первую половину массива
-    print(main_middle - start)
+    sort_half(array, start, main_middle, main_middle + 1, main_middle - start + 1)  # Сортируем первую половину массива
+    # print(main_middle - start)
 
     # def under_sort(array=array, start=start, end=end):
-    # end = main_middle
-    while start < end:
+    print(f"after first sort: {array}")
+    end = main_middle
+    while end - start > 2:
         print(f"in while: {start}, {end}")
-        middle = start + (main_middle - start) // 2
-        print(main_middle)
-        length = main_middle - middle - 1
-        sort_half(array, middle + 1, main_middle, start, length)
-        merge(array, start, middle - 1, main_middle + 1, end, middle + 1)
+
+        middle = good_length(start, end)
+        print(f"middle: {middle}")
+        length = end - middle + 1
+        sort_half(array, middle, main_middle, 0, length)
+
+        print(f"one more sort: {array}")
+
+        print(f"for big merge: {start}, {middle - 1}, {end + 1}, {end * 2 + 1}, buffer: {middle - 1}")
+        merge(array, start, middle - 1, end + 1, end * 2 + 1,
+              middle - 1)  # Мердж не работает, просто ставит рядом отсортированные массивы (пАчИмУ?!?!?!?)
+        print(f"merging: {array}")
         print(middle)
         start = 0
-        end = middle - 2
+        end = middle
 
     # under_sort(array, start, end)
     # if start < end:
