@@ -47,18 +47,19 @@ def good_length(start, end):
 
 
 def algorithm_sort(array, start, end):
-    middle = good_length(start, end)  # Decide where to sort (to the right half)
-    merge_buff_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
+    if start - end > 0:
+        middle = good_length(start, end)  # Decide where to sort (to the right half)
+        merge_buff_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
 
-    if middle - start < 2:
-        insertion_sort(array, start, end)
-    else:
-        sub_end = middle
-        while sub_end - start > 2:
-            rubbish_middle = good_length(start, sub_end)
-            merge_buff_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
-            merge(array, start, rubbish_middle, sub_end + 1, end, rubbish_middle + 1)
-            sub_end = rubbish_middle
+        if middle - start < 2:
+            insertion_sort(array, start, end)
+        else:
+            sub_end = middle
+            while sub_end - start > 2:
+                rubbish_middle = good_length(start, sub_end)
+                merge_buff_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
+                merge(array, start, rubbish_middle, sub_end + 1, end, rubbish_middle + 1)
+                sub_end = rubbish_middle
 
 
 def merge_buff_sort(array, start, end, buff):

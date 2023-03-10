@@ -33,7 +33,6 @@ def merge(arr, start1, end1, start2, end2, buff_start):
 
 
 def insertion_sort(arr, start, end):
-    print(f"insertion: {start}, {end}")
     for j in range(start, end + 1):
         key = arr[j]
         i = j - 1
@@ -45,49 +44,53 @@ def insertion_sort(arr, start, end):
 
 def good_length(start, end):
     middle = start + (end - start) // 2
+    print(f"length: {end - start + 1}")
     if (end - start + 1) % 2 != 0:
         middle -= 1
     return middle
 
 
-def smart_sort(array, start, end):
+def algorithm_sort(array, start, end):
     # middle = start + (end - start) // 2  # Decide where to sort (to the right half)
-    middle = good_length(start, end)
-    print(1)
-    merge_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
-    print(f"first sort: {array}, {middle - start}")
-    if middle - start < 2:
-        insertion_sort(array, start, end)
-        print(f"rubbish to the right {array}")
-    else:
-        sub_end = middle
-        while sub_end - start > 2:
-            print(f"in while: {start}, {sub_end}")
-            # rubbish_middle = middle // 2  # Choose another buffer (for sorting rubbish at the left)
-            # rubbish_middle = start + (sub_end - start) // 2
-            rubbish_middle = good_length(start, sub_end)
-            print(rubbish_middle)
-            # merge_sort(array, rubbish_middle + 1, sub_end, start)  # Sort right "rubbish half" to the left half
-            merge_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
+    if end - start > 0:
+        middle = good_length(start, end)
+        print(f"algorithm: {start}, {middle}, {end}")
+        merge_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
+        print(f"first sort: {array}, {middle - start}")
+
+        if middle - start < 2:
+            insertion_sort(array, start, end)
             print(f"rubbish to the right {array}")
-            print(f"buffer: {rubbish_middle + 1}")
-            merge(array, start, rubbish_middle, sub_end + 1, end, rubbish_middle + 1)
-            print(f"merging: {array}")
-            sub_end = rubbish_middle
+        else:
+            sub_end = middle
+            while sub_end - start >= 2:
+                print(f"in while: {start}, {sub_end}")
+                # rubbish_middle = middle // 2  # Choose another buffer (for sorting rubbish at the left)
+                # rubbish_middle = start + (sub_end - start) // 2
+                rubbish_middle = good_length(start, sub_end)
+                print(rubbish_middle)
+                # merge_sort(array, rubbish_middle + 1, sub_end, start)  # Sort right "rubbish half" to the left half
+                merge_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
+                print(f"rubbish to the right {array}")
+                print(f"buffer: {rubbish_middle + 1}")
+                merge(array, start, rubbish_middle, sub_end + 1, end, rubbish_middle + 1)
+                print(f"merging: {array}")
+                sub_end = rubbish_middle
 
 
 def merge_sort(array, start, end, buff):
     print(f"in merge_sort: {array[start: end + 1]}, {buff}")
     if start < end:
         middle = start + (end - start) // 2
-        smart_sort(array, start, middle)
-        smart_sort(array, middle + 1, end)
+        algorithm_sort(array, start, middle)
+        algorithm_sort(array, middle + 1, end)
         merge(array, start, middle, middle + 1, end, buff)
 
 
 def start_sort(arr):
     size = len(arr) - 1
-    smart_sort(arr, 0, size)
+    algorithm_sort(arr, 0, size)
+    print(arr)
     insertion_sort(arr, 0, size)
 
 
