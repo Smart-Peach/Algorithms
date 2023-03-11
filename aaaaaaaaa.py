@@ -47,7 +47,9 @@ def good_length(start, end):
 
 
 def algorithm_sort(array, start, end):
-    if start - end > 0:
+    print(2)
+
+    if end - start > 0:
         middle = good_length(start, end)  # Decide where to sort (to the right half)
         merge_buff_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
 
@@ -55,7 +57,7 @@ def algorithm_sort(array, start, end):
             insertion_sort(array, start, end)
         else:
             sub_end = middle
-            while sub_end - start > 1:
+            while sub_end - start > 0:
                 rubbish_middle = good_length(start, sub_end)
                 merge_buff_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
                 merge(array, start, rubbish_middle, sub_end + 1, end, rubbish_middle + 1)
@@ -63,6 +65,7 @@ def algorithm_sort(array, start, end):
 
 
 def merge_buff_sort(array, start, end, buff):
+    print(3)
     if start < end:
         middle = start + (end - start) // 2
         algorithm_sort(array, start, middle)
@@ -72,6 +75,7 @@ def merge_buff_sort(array, start, end, buff):
 
 def start(arr):
     size = len(arr) - 1
+    print(1)
     algorithm_sort(arr, 0, size)
     # Recursion stops earlier than needed (artificial step) etc. [5, 8, 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 6, 7, 7, 8, 9, 9]
     # insertion_sort(arr, 0, size)
