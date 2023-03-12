@@ -12,12 +12,10 @@ def merge(arr, start1, end1, start2, end2, buff_start):
     i = j = k = 0
     while i < lsize and j < rsize:
         if arr[start1 + i] <= arr[start2 + j]:
-            # print(buff_start + k, start1 + i)
             swap(arr, buff_start + k, start1 + i)
             k += 1
             i += 1
         else:
-            # print(buff_start + k, start2 + j)
             swap(arr, buff_start + k, start2 + j)
             k += 1
             j += 1
@@ -44,73 +42,68 @@ def insertion_sort(arr, start, end):
 
 def good_length(start, end):
     middle = start + (end - start) // 2
-    print(f"length: {end - start + 1}")
     if (end - start + 1) % 2 != 0:
         middle -= 1
-
-    return middle
-
-
-def good_length_rubbish(start, end):
-    middle = start + (end - start) // 2
-    print(f"length: {end - start + 1}")
-    if (end - start + 1) % 2 != 0:
-        middle += 1
-
     return middle
 
 
 def algorithm_sort(array, start, end):
-    # middle = start + (end - start) // 2  # Decide where to sort (to the right half)
     print(f"in algorithm sort: {array[start:end + 1]}")
     if end - start > 0:
-        middle = good_length(start, end)
-        print(f"algorithm: {start}, {middle}, {end}")
-        merge_sort(array, start, middle, middle + 1)  # Sort left half with right half as a buffer
-        print(f"first sort: {array}, {middle - start}")
+        # if end - start < 3:
+        #     insertion_sort(array, start, end)
+        # else:
+        middle = good_length(start, end)  # Decide where to sort (to the right half)
+        # buffer = end - (middle - start - 1) - (end - middle) + 1
+        buffer = middle + 1
+        if (end - start + 1) % 2 != 0:
+            buffer += 1
 
-        if middle - start < 2:
-            insertion_sort(array, start, end)
-            print(f"rubbish to the right {array}")
-        else:
-            sub_end = middle
-            while sub_end - start > 2:
-                print(f"in while: {array[start:sub_end + 1]}")
-                # rubbish_middle = middle // 2  # Choose another buffer (for sorting rubbish at the left)
-                # rubbish_middle = start + (sub_end - start) // 2
-                rubbish_middle = good_length_rubbish(start, sub_end)
-                print(f"rubbish middle is {rubbish_middle}")
-                # merge_sort(array, rubbish_middle + 1, sub_end, start)  # Sort right "rubbish half" to the left half
-                merge_sort(array, rubbish_middle, sub_end, start)  # Sort right "rubbish half" to the left half
-                print(f"rubbish to the right {array}")
-                buffer = end - (rubbish_middle - start - 1) - (end - sub_end) + 1
-                print(f"buffer: {buffer}")
-                merge(array, start, rubbish_middle - 2, sub_end + 1, end, buffer)
-                print(f"merging: {array}")
+        print(f"buffer is: {buffer}")
+        # print(array[start:end + 1], middle - start)
+        # print(f"array is {array}")
+        merge_buff_sort(array, start, middle, buffer)  # Sort left half with right half as a buffer
+        print(f"after sorting to the right: {array}")
+        # if middle - start <= 2:
+        #     insertion_sort(array, start, end)
+        #     print(f"for insertion: {array[start:middle + 1]}, {array[start:end + 1]}")
+        # else:
+        rubbish_end = buffer - 1
+        # if rubbish_end - start < 3:
+        #     print(f"in while: {array[start:rubbish_end + 1]}")
+        #     insertion_sort(array, start, end)
+        #     print(f"after sorting rubbish: {array}")
+        # else:
+        while rubbish_end - start > 2:
+            print(f"in while: {array[start:rubbish_end + 1]}")
+            rubbish_middle = good_length(start, rubbish_end)
+            merge_buff_sort(array, rubbish_middle, rubbish_end, start)  # Sort right "rubbish half" to the left half
+            merge(array, start, rubbish_middle, rubbish_end + 1, end, rubbish_middle + 1)
+            print(f"after sorting rubbish: {array}")
+            rubbish_end = rubbish_middle
+            print(f"end is {rubbish_end} and start is {start}")
+        insertion_sort(array, start, end)
 
-                sub_end = rubbish_middle
-                print(f"end is {sub_end} and start is {start}")
 
-
-def merge_sort(array, start, end, buff):
+def merge_buff_sort(array, start, end, buff):
     print(f"in merge_sort: {array[start: end + 1]}, {buff}")
     if start < end:
         middle = start + (end - start) // 2
-        # middle = good_length(start, end)
         algorithm_sort(array, start, middle)
         algorithm_sort(array, middle + 1, end)
         merge(array, start, middle, middle + 1, end, buff)
 
 
-def start_sort(arr):
+def start(arr):
     size = len(arr) - 1
     algorithm_sort(arr, 0, size)
     print(arr)
+    # Recursion stops earlier than needed (artificial step) etc. [8, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9, 9]
     # insertion_sort(arr, 0, size)
 
 
 # arr = [13, 99, 51, 28, 91, 30, 34, 111, 56, 22, 37, 12, 1, 5, 15, 60]
 arr = [9, 8, 7, 6, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 # arr = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 20]
-start_sort(arr)
+start(arr)
 print(arr)
