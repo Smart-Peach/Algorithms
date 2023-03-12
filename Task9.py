@@ -118,4 +118,5 @@ def matrix_multiplication_strassen(x, y):
 a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
 b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
 print(matrix_multiply_classic(a, a))
+print(matrix_multiply_8recursions(a, a))
 print(matrix_multiplication_strassen(a, a))
