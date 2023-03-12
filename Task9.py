@@ -8,12 +8,12 @@ def matrix_multiply_classic(a, b):
     return res
 
 
-def matrix_addition(a, b):
+def matrix_addition(a, b, k):
     assert len(a) == len(b) and len(a[0]) == len(b[0])
     res = [[0 for j in range(len(a[0]))] for i in range(len(a))]
     for i in range(len(a)):
         for j in range(len(a[0])):
-            res[i][j] = a[i][j] + b[i][j]
+            res[i][j] = a[i][j] + k * b[i][j]
     return res
 
 
@@ -26,7 +26,6 @@ def sub_matrix(matrix, width, height, ind1, ind2):
 
 
 def matrix_cutting(matrix, middle_columns, middle_strings):
-    # print(middle_columns, middle_strings)
     matrix_width = len(matrix[0])
     matrix_height = len(matrix)
 
@@ -38,10 +37,6 @@ def matrix_cutting(matrix, middle_columns, middle_strings):
     c = sub_matrix(matrix, middle_columns, height, middle_strings, 0)
     d = sub_matrix(matrix, width, height, middle_strings, middle_columns)
 
-    # print(a)
-    # print(b)
-    # print(c)
-    # print(d)
     return a, b, c, d
 
 
@@ -82,30 +77,45 @@ def matrix_multiply_8recursions(x, y):
     a, b, c, d = matrix_cutting(x, middle_columns_x, middle_strings_x)
     e, f, g, h = matrix_cutting(y, middle_columns_y, middle_strings_y)
 
-    print(f"a,b,c,d: {a, b, c, d}")
-    print(f"e,f,g,h: {e, f, g, h}")
-
-    step1 = matrix_addition(matrix_multiply_8recursions(a, e), matrix_multiply_8recursions(b, g))
-    step2 = matrix_addition(matrix_multiply_8recursions(a, f), matrix_multiply_8recursions(b, h))
-    step3 = matrix_addition(matrix_multiply_8recursions(c, e), matrix_multiply_8recursions(d, g))
-    step4 = matrix_addition(matrix_multiply_8recursions(c, f), matrix_multiply_8recursions(d, h))
+    step1 = matrix_addition(matrix_multiply_8recursions(a, e), matrix_multiply_8recursions(b, g), 1)
+    step2 = matrix_addition(matrix_multiply_8recursions(a, f), matrix_multiply_8recursions(b, h), 1)
+    step3 = matrix_addition(matrix_multiply_8recursions(c, e), matrix_multiply_8recursions(d, g), 1)
+    step4 = matrix_addition(matrix_multiply_8recursions(c, f), matrix_multiply_8recursions(d, h), 1)
 
     res = matrix_gluing(step1, step2, step3, step4)
     return res
 
 
-# a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
-# b = [[5, 6], [1, 2], [3, 4]]
+def matrix_multiplication_strassen(x, y):
+    assert len(x[0]) == len(y)
+    if len(y) == 1:
+        return matrix_multiply_classic(x, y)
+    middle_strings_x = len(x) // 2
+    middle_columns_x = len(x[0]) // 2
+    middle_strings_y = len(y) // 2
+    middle_columns_y = len(y[0]) // 2
 
-# middle_strings = len(a) // 2
-# middle_columns = len(a[0]) // 2
-# matrix_cutting(a, middle_columns, middle_strings)
+    a, b, c, d = matrix_cutting(x, middle_columns_x, middle_strings_x)
+    e, f, g, h = matrix_cutting(y, middle_columns_y, middle_strings_y)
 
-# a = [[1]]
-# b = [[2, 3]]
-# c = [[4]]
-# d = [[5, 6]]
-a = [[1, 2], [3, 4]]
-b = [[5, 6], [7, 8]]
-print(matrix_multiply_classic(a, b))
-print(matrix_multiply_8recursions(a, b))
+    p1 = matrix_multiplication_strassen(a, matrix_addition(f, h, -1))
+    p2 = matrix_multiplication_strassen(matrix_addition(a, b, 1), h)
+    p3 = matrix_multiplication_strassen(matrix_addition(c, d, 1), e)
+    p4 = matrix_multiplication_strassen(d, matrix_addition(g, e, -1))
+    p5 = matrix_multiplication_strassen(matrix_addition(a, d, 1), matrix_addition(e, h, 1))
+    p6 = matrix_multiplication_strassen(matrix_addition(b, d, -1), matrix_addition(g, h, 1))
+    p7 = matrix_multiplication_strassen(matrix_addition(a, c, -1), matrix_addition(e, f, 1))
+
+    q1 = matrix_addition(matrix_addition(matrix_addition(p5, p4, 1), p2, -1), p6, 1)
+    q2 = matrix_addition(p1, p2, 1)
+    q3 = matrix_addition(p3, p4, 1)
+    q4 = matrix_addition(matrix_addition(matrix_addition(p1, p5, 1), p3, -1), p7, -1)
+
+    res = matrix_gluing(q1, q2, q3, q4)
+    return res
+
+
+a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+print(matrix_multiply_classic(a, a))
+print(matrix_multiplication_strassen(a, a))
