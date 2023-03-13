@@ -88,7 +88,7 @@ def matrix_multiply_8recursions(x, y):
 
 def matrix_multiplication_strassen(x, y):
     assert len(x[0]) == len(y)
-    if len(y) == 1:
+    if len(y) <= 16:
         return matrix_multiply_classic(x, y)
     middle_strings_x = len(x) // 2
     middle_columns_x = len(x[0]) // 2
@@ -115,8 +115,18 @@ def matrix_multiplication_strassen(x, y):
     return res
 
 
+def make_matrix(size):
+    matrix = [[0 for j in range(size)] for i in range(size)]
+    for i in range(size):
+        for j in range(size):
+            matrix[i][j] = i + 1
+    return matrix
+
+
 a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
 b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-print(matrix_multiply_classic(a, a))
-print(matrix_multiply_8recursions(a, a))
-print(matrix_multiplication_strassen(a, a))
+# print(matrix_multiply_classic(a, a))
+# print(matrix_multiply_8recursions(a, a))
+# print(matrix_multiplication_strassen(a, a))
+f = make_matrix(512)  # Still ok counts this size
+print(matrix_multiplication_strassen(f, f))
