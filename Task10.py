@@ -58,7 +58,7 @@ def counting_sort(arr, elem_ind):
 
 def lsd_radix_sort(arr_str):
     if len(arr_str) == 0:
-        return arr
+        return arr_str
     symbols = len(arr_str[0])
     for i in reversed(range(symbols)):
         arr_str = counting_sort(arr_str, i)
