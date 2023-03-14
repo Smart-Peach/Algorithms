@@ -37,6 +37,7 @@ def merge_sort_start(array, p, r):
 def merge_sort(array):
     size = len(array) - 1
     merge_sort_start(array, 0, size)
+    return array
 
 
 def counting_sort(arr, elem_ind):
@@ -56,13 +57,10 @@ def counting_sort(arr, elem_ind):
 
 
 def lsd_radix_sort(arr_str):
+    if len(arr_str) == 0:
+        return arr
     symbols = len(arr_str[0])
     for i in reversed(range(symbols)):
         arr_str = counting_sort(arr_str, i)
     return arr_str
 
-
-arr = ['za', 'yd', 'zb']
-print(lsd_radix_sort(arr))
-merge_sort(arr)
-print(arr)
