@@ -1,3 +1,6 @@
+"""Merge sort like in DMTA lectures"""
+
+
 def merge(a, p, q, r):
     n1 = q - p + 1
     n2 = r - q
@@ -34,7 +37,17 @@ def merge_sort(array, p, r):
         merge(array, p, q, r)
 
 
-l = [5, 6, 78, 0, 1, 89, 25, 4, 6, 8]
-size = len(l) - 1
-merge_sort(l, 0, size)
-print(l)
+"""Counting sort sorts absolutes"""
+
+
+def counting_sort(arr):
+    counter = [0] * (max(arr) + 1)
+    for i in arr:
+        counter[abs(i)] += 1
+    for i in range(len(counter) - 1):
+        counter[i + 1] += counter[i]
+    res = [0] * len(arr)
+    for i in reversed(arr):
+        res[counter[abs(i)] - 1] = i
+        counter[abs(i)] -= 1
+    return res

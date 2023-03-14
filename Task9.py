@@ -128,5 +128,5 @@ b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
 # print(matrix_multiply_classic(a, a))
 # print(matrix_multiply_8recursions(a, a))
 # print(matrix_multiplication_strassen(a, a))
-f = make_matrix(512)  # Still ok counts this size
+f = make_matrix(1024)  # Still ok counts this size
 print(matrix_multiplication_strassen(f, f))
