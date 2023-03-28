@@ -13,7 +13,7 @@ def partition(array, start, end, pivot):
 
     i = j = start + 1
     while j != end + 1:
-        if array[j] <= array[start]:
+        if array[j] < array[start]:
             swap(array, j, i)
             i += 1
         j += 1
@@ -23,23 +23,22 @@ def partition(array, start, end, pivot):
 
 
 def kth(array, start: int, end: int, k: int) -> int:
-    print(start, end, array[start: end + 1])
-    if end - start <= 1:
+
+    if end - start == 0:
         return array[start]
+
     pivot = random.randint(start, end)
     p = partition(array, start, end, pivot)
-    print(f"after partition: pivot - {pivot}, p is {p}, {array[start:end + 1]}")
-    print(array)
+
     if p + 1 == k:
         return array[p]
     elif p + 1 > k:
         return kth(array, start, p, k)
     else:
-        print(1)
         return kth(array, p + 1, end, k)
 
 
-nums = [3, 2, 1, 5, 6, 4]
+nums = [-1, -1]
 k = 2
 k = len(nums) - k + 1
 size = len(nums) - 1
