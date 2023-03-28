@@ -8,7 +8,7 @@ def swap(array, ind1, ind2):
 
 
 def quick_sort(array, start, end):
-    if end - start > 0:
+    if end > start:
         elem_ind = random.randint(start, end)  # Choose random element (index)
         if elem_ind != start:  # if it isn't first swap
             swap(array, start, elem_ind)
