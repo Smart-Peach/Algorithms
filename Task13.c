@@ -12,22 +12,10 @@ void print(int* arr, size_t end) {
 	printf("\n");
 }
 
-void make_arr(int* arr, size_t len) {
-	for (size_t i = 0; i < len; i++) {
-		arr[i] = rand() % 100;
-	}
-}
 
 void rand_array(int* arr, long len) {
 	for (long i = 0; i < len; i++) {
 		arr[i] = rand() % 100;
-	}
-}
-
-
-void copy(int* arr1, int* arr2, long len) {
-	for (size_t i = 0; i < len; i++) {
-		arr2[i] = arr1[i];
 	}
 }
 
@@ -88,40 +76,41 @@ void quick_sort_Hoare(long* start, long* end) {
 }
 
 
-long* partition_Aleksandresku(long* left, long* right) {
+long* partition_Aleksandresku(long* start, long* end) {
 
-	if (right - left < 2) {
-		return left;
+	if (end - start < 2) {
+		return start;
 	}
-	--right;
+	--end;
 
-	if (*left > *right) {
-		long buf = *left;
-		*left = *right;
-		*right = buf;
+	if (*start > *end) {
+		int c = *start;
+		*start = *end;
+		*end = c;
 	}
 
-	long* pivot_pos = left;
-	long pivot = *pivot_pos;
+	long* pivot_pos = start;
+	int pivot = *start;
 
-	while (*++left < pivot);
+	do {
+		++start;
+	} while (*start < pivot);
 
-
-	for (long* read = left; read < right; read++) {
+	for (long* read = start + 1; read < end; read++) {
 		long x = *read;
 		long smaller = -(x < pivot);
 
-		long delta = smaller & (read - left);
-		left[delta] = *left;
+		long delta = smaller & (read - start);
+		start[delta] = *start;
 		read[-delta] = x;
-		left -= smaller;
+		start -= smaller;
 	}
 
-	--left;
+	--start;
 
-	*pivot_pos = *left;
-	*left = pivot;
-	return left;
+	*pivot_pos = *start;
+	*start = pivot;
+	return start;
 }
 
 
@@ -163,8 +152,6 @@ void main() {
 	time_check_Lomuto(array_1, len);
 	time_check_Hoare(array_2, len);
 	time_check_Aleksandresku(array_3, len);
-
-	free(array_1);
 	free(array_2);
 	free(array_3);
 }
