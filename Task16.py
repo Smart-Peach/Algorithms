@@ -1,22 +1,19 @@
-class Node:
-    def __init__(self, value=None):
-        self.value = value
-        self.next = None
+def detectCycle(self, head):
+    slow = head
+    fast = head
 
+    while (fast != None and fast.next != None):
+        slow = slow.next
+        fast = fast.next.next
+        if (slow == fast):
+            break
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
+    if fast == None or fast.next == None:
+        return None
 
-    def add_end(self, value):
-        node = Node(value)
-        if self.head is None:
-            self.head = node
-            return
-        last_node = self.head
-        while(last_node.next):
-            last_node = last_node.next
-        last_node.next = node
+    slow = head
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
 
-
-
+    return fast
