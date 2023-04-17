@@ -23,7 +23,7 @@ def to_polish_entry(mat_expression: str) -> List:
                         stack.pop(-1)
                     stack.pop(-1)
                 else:
-                    while len(stack) and (priority[stack[-1]] >= priority[i]):
+                    while len(stack) and (priority[stack[-1]] >= priority[i]) and i != '**':
                         result.append(stack[-1])
                         stack.pop(-1)
                     stack.append(i)
@@ -33,5 +33,3 @@ def to_polish_entry(mat_expression: str) -> List:
         stack.pop(-1)
     return result
 
-
-print(to_polish_entry('( 2 + 3 ) * 4'))

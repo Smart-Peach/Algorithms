@@ -19,8 +19,8 @@ class SolutionTest(TestCase):
                          ['12', '75', '5', '*', '+', '3', '2', '5', '*', '-', '8', '2', '**', '*', '+'])
 
     def test5(self):
-        self.assertEqual(to_polish_entry('90 * 6 - 78 ** 8 ** 2 + 1'),
-                         ['90', '6', '*', '78', '8', '**', '2', '**', '-', '1', '+'])
+        self.assertEqual(to_polish_entry('4 ** 5 ** 7'),
+                         ['4', '5', '7', '**', '**'])
 
 
 if __name__ == '__main__':

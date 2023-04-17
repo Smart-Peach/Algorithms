@@ -1,12 +1,12 @@
 class MinStack:
 
     def __init__(self):
-        self.stack_min = [2**32]
+        self.stack_min = []
         self.data = []
 
     def push(self, val: int) -> None:
         self.data.append(val)
-        if val <= self.stack_min[-1]:
+        if not len(self.stack_min) or val <= self.stack_min[-1]:
             self.stack_min.append(val)
 
     def pop(self) -> None:
