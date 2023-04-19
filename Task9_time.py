@@ -27,35 +27,29 @@ def calculations(time):
     return [average, standard_deviation, geometric_mean]
 
 
+def measure(func, measure_array, matrix):
+
+    def time_wrapper(func, matrix):
+        time_array = []
+        for i in range(3):
+            start_time = time()
+            func(matrix, matrix)
+            finish_time = time()
+            time_array.append(finish_time - start_time)
+        time_array.pop(0)
+        return time_array
+
+    calcus = calculations(time_wrapper(func, matrix))
+    measure_array.append(calcus)
+
+
 measurements = []
 size = int(input())
 matrix = make_matrix(size)
-time_classic = []
-for i in range(3):
-    start_time = time()
-    a = matrix_multiply_classic(matrix, matrix)
-    finish_time = time()
-    time_classic.append(finish_time - start_time)
-time_classic.pop(0)
-measurements.append(calculations(time_classic))
 
-time_8_recursions = []
-for i in range(3):
-    start_time = time()
-    a = matrix_multiply_8recursions(matrix, matrix)
-    finish_time = time()
-    time_8_recursions.append(finish_time - start_time)
-time_8_recursions.pop(0)
-measurements.append(calculations(time_8_recursions))
-
-time_strassen = []
-for i in range(3):
-    start_time = time()
-    a = matrix_multiplication_strassen(matrix, matrix)
-    finish_time = time()
-    time_strassen.append(finish_time - start_time)
-time_strassen.pop(0)
-measurements.append(calculations(time_strassen))
+measure(matrix_multiply_classic, measurements, matrix)
+measure(matrix_multiply_8recursions, measurements, matrix)
+measure(matrix_multiplication_strassen, measurements, matrix)
 
 format_table(['classic', '8 recursions', 'Strassen'], ['sample mean', 'standard deviation', 'geometric mean'],
              measurements)
