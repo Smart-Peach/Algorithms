@@ -67,7 +67,7 @@ def matrix_gluing(a, b, c, d):
 
 def matrix_multiply_8recursions(x, y):
     assert len(x[0]) == len(y)
-    if len(y) == 1:
+    if len(y) <= 32:
         return matrix_multiply_classic(x, y)
     middle_strings_x = len(x) // 2
     middle_columns_x = len(x[0]) // 2
@@ -88,7 +88,7 @@ def matrix_multiply_8recursions(x, y):
 
 def matrix_multiplication_strassen(x, y):
     assert len(x[0]) == len(y)
-    if len(y) <= 16:
+    if len(y) <= 32:
         return matrix_multiply_classic(x, y)
     middle_strings_x = len(x) // 2
     middle_columns_x = len(x[0]) // 2
@@ -122,11 +122,10 @@ def make_matrix(size):
             matrix[i][j] = i + 1
     return matrix
 
-
-a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-b = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
-# print(matrix_multiply_classic(a, a))
-# print(matrix_multiply_8recursions(a, a))
-# print(matrix_multiplication_strassen(a, a))
-f = make_matrix(512)  # Still ok counts this size
-print(matrix_multiplication_strassen(f, f))
+# 1024
+#
+# |  Benchmark    |  sample mean |  standard deviation |  geometric mean |
+# |----------------------------------------------------------------------|
+# |  classic      |  145.34      |  0.52               |  145.33         |
+# |  8 recursions |  138.85      |  0.18               |  138.85         |
+# |  Strassen     |  75.25       |  0.01               |  75.25          |

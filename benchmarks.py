@@ -43,6 +43,7 @@ def format_table(benchmarks, algos, results):
             print(" ", str(columns[j][i]).ljust(m[j], " "), "|", end="")
         print()
 
+
 # format_table(["b", "t"],
 #              ["quick sort", "merge sort pam pam pam", "bubble sort"],
 #              [[1.23, 1.56, 2.00000000000001], [3.3, 2.9, 3.9]])
