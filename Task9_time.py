@@ -4,9 +4,10 @@ from Task9 import matrix_multiplication_strassen
 from Task9 import make_matrix
 from benchmarks import format_table
 from time import time
+from typing import List
 
 
-def calculations(time):
+def calculations(time: List):
     standard_deviation = average = 0
     geometric_mean = 1
     length = len(time)
@@ -20,18 +21,17 @@ def calculations(time):
     standard_deviation = (standard_deviation / length - average ** 2) ** 0.5
     geometric_mean = geometric_mean ** (1 / length)
 
-    average = '{0:.3f}'.format(average)
-    standard_deviation = '{0:.3f}'.format(standard_deviation)
-    geometric_mean = '{0:.3f}'.format(geometric_mean)
+    average = '{0:.5f}'.format(average)
+    standard_deviation = '{0:.5f}'.format(standard_deviation)
+    geometric_mean = '{0:.5f}'.format(geometric_mean)
 
     return [average, standard_deviation, geometric_mean]
 
 
 def measure(func, measure_array, matrix):
-
     def time_wrapper(func, matrix):
         time_array = []
-        for i in range(3):
+        for i in range(7):
             start_time = time()
             func(matrix, matrix)
             finish_time = time()

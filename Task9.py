@@ -122,6 +122,7 @@ def make_matrix(size):
             matrix[i][j] = i + 1
     return matrix
 
+
 # 1024
 #
 # |  Benchmark    |  sample mean |  standard deviation |  geometric mean |
@@ -129,3 +130,10 @@ def make_matrix(size):
 # |  classic      |  145.34      |  0.52               |  145.33         |
 # |  8 recursions |  138.85      |  0.18               |  138.85         |
 # |  Strassen     |  75.25       |  0.01               |  75.25          |
+
+
+# |  Benchmark    |  sample mean |  standard deviation |  geometric mean |
+# |----------------------------------------------------------------------|
+# |  classic      |  155.98090   |  4.31883            |  155.92020      |
+# |  8 recursions |  154.92384   |  4.01150            |  154.87235      |
+# |  Strassen     |  81.18145    |  1.20644            |  81.17258       |
