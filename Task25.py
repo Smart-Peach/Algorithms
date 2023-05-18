@@ -13,7 +13,7 @@ class Solution:
             return max(calculate_hight(root.left), calculate_hight(root.right)) + 1
 
         def balance(root):
-            return calculate_hight(root.left) - calculate_hight(root.right)
+            return calculate_hight(root.right) - calculate_hight(root.left)
 
         def left_rotation(root):
             x = root.right
@@ -30,23 +30,30 @@ class Solution:
         def get_rotation(root):
             bal = balance(root)
             if bal >= 2:
-                if balance(root.left) >= 1:
-                    return right_rotation(root)
-                else:
-                    root.left = left_rotation(root.left)
-                    return right_rotation(root)
+                if balance(root.right) < 1:
+                    root.right = right_rotation(root.right)
+                return left_rotation(root)
+                # if balance(root.right) >= 1:
+                #     return left_rotation(root)
+                # else:
+                #     root.right = right_rotation(root.right)
+                #     return left_rotation(root)
 
             elif bal <= -2:
-                if balance(root.right) <= -1:
-                    return left_rotation(root)
-                else:
-                    root.right = right_rotation(root.right)
-                    return left_rotation(root)
+                if balance(root.left) > -1:
+                    root.left = left_rotation(root.left)
+                return right_rotation(root)
+                # if balance(root.left) <= -1:
+                #     return right_rotation(root)
+                # else:
+                #     root.left = left_rotation(root.left)
+                #     return right_rotation(root)
 
             return root
 
         if not root:
             return None
+
         root.left = self.balanceBST(root.left)
         root.right = self.balanceBST(root.right)
 
