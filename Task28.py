@@ -6,20 +6,21 @@ from math import log
 class FilterBlum:
     def __init__(self, requests_amount: int, error_probability: float):
         def make_hashes():
+            tuple_coefficient = [randint(0, array_len - 1) for _ in range(4)]
 
-            def func(args):
+            def func(args, tuple_coeff=tuple_coefficient):
                 # print(args, type(args))
-                tuple_coefficient = [randint(0, array_len - 1) for _ in range(self.hash_amount)]
-                return sum(tuple_coefficient[j] * args[j] for j in range(self.hash_amount)) % array_len
+                # tuple_coefficient = [randint(0, array_len - 1) for _ in range(4)]
+                return sum(tuple_coeff[j] * args[j] for j in range(4)) % array_len
 
-            return [func for _ in range(self.hash_amount)]
+            return func
 
         bits_per_elem = int(log(error_probability) // (log(0.5) * log(2)))
         array_len = bits_per_elem * requests_amount
 
         self.bits = BitSet(array_len)  # Array of bits
         self.hash_amount = int(log(2) * bits_per_elem)  # Amount of hash functions
-        self.hash_functions = make_hashes()  # Array of hash functions
+        self.hash_functions = [make_hashes() for _ in range(self.hash_amount)]  # Array of hash functions
 
     def lookup(self, val):
         ip_address = val.split(".")
@@ -38,8 +39,14 @@ class FilterBlum:
             self.bits[index] = 1
 
 
-a = FilterBlum(10, 0.2)
-a.insert('192.168.5.255')
+a = FilterBlum(10, 0.02)
+# a.insert('192.168.5.255')
+# b = [192, 168, 5, 255]
+# for i in range(5):
+#     for func in a.hash_functions:
+#         print(func(b))
+#     print("==========================================")
+
 a.insert('192.168.5.0')
 a.insert('255.255.255.0')
 a.insert('169.254.254.255')
