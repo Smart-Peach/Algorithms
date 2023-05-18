@@ -9,8 +9,6 @@ class FilterBlum:
             tuple_coefficient = [randint(0, array_len - 1) for _ in range(4)]
 
             def func(args, tuple_coeff=tuple_coefficient):
-                # print(args, type(args))
-                # tuple_coefficient = [randint(0, array_len - 1) for _ in range(4)]
                 return sum(tuple_coeff[j] * args[j] for j in range(4)) % array_len
 
             return func
