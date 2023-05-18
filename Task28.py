@@ -13,12 +13,16 @@ class FilterBlum:
 
             return func
 
-        bits_per_elem = int(log(error_probability) // (log(0.5) * log(2)))
+        try:
+            bits_per_elem = int(log(error_probability) // (log(0.5) * log(2)))
+        except ArithmeticError:
+            bits_per_elem = 1
+
         array_len = bits_per_elem * requests_amount
+        hash_amount = int(log(2) * bits_per_elem)  # Amount of hash functions
 
         self.bits = BitSet(array_len)  # Array of bits
-        self.hash_amount = int(log(2) * bits_per_elem)  # Amount of hash functions
-        self.hash_functions = [make_hashes() for _ in range(self.hash_amount)]  # Array of hash functions
+        self.hash_functions = [make_hashes() for _ in range(hash_amount)]  # Array of hash functions
 
     def lookup(self, val):
         ip_address = val.split(".")
@@ -37,7 +41,7 @@ class FilterBlum:
             self.bits[index] = 1
 
 
-a = FilterBlum(10, 0.02)
+a = FilterBlum(10, 0.002)
 # a.insert('192.168.5.255')
 # b = [192, 168, 5, 255]
 # for i in range(5):
