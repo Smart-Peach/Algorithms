@@ -1,6 +1,3 @@
-from typing import List
-
-
 class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
 
@@ -15,11 +12,8 @@ class Solution:
                 else:
                     if colors[vert] != color:
                         return False
-
-            color = not color
-            for i in graph[vertex]:
-                if not visited[i]:
-                    res = dfs(i, color)
+                if not visited[vert]:
+                    res = dfs(vert, not color)
                     if not res:
                         return False
 
