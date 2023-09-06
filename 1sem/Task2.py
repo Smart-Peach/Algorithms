@@ -8,9 +8,10 @@ def right_size(x, y):
 
 
 def karatsuba(num1, num2):
+    # print(num1, num2)
     size = right_size(num1, num2)
 
-    if size == 2:
+    if size <= 2 or not num1 or not num2:
         return num1 * num2
     n = size // 2
 
