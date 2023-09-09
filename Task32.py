@@ -8,6 +8,7 @@ class Solution:
         while able_steps and present_ind < finish_ind:
             able_steps -= 1
             present_ind += 1
+
             if nums[present_ind] > able_steps:
                 able_steps = nums[present_ind]
 
