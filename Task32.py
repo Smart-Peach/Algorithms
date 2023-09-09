@@ -2,18 +2,15 @@ class Solution:
     def canJump(self, nums: List[int]) -> bool:
 
         present_ind = 0
-        last_ind = len(nums) - 1
+        finish_ind = len(nums) - 1
+        able_steps = nums[0]
 
-        while present_ind < last_ind:
-            value = nums[present_ind]
-            if not value:
-                return False
-            if present_ind + value >= last_ind:
-                return True
-            max = 0
-            for i in range(present_ind + 1, present_ind + value + 1):
-                if i + nums[i] > max:
-                    max = i + nums[i]
-                    present_ind = i
+        while able_steps and present_ind < finish_ind:
+            able_steps -= 1
+            present_ind += 1
+            if nums[present_ind] > able_steps:
+                able_steps = nums[present_ind]
 
-        return True
+        if present_ind == finish_ind:
+            return True
+        return False
