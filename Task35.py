@@ -2,18 +2,21 @@ class UnionFind:
     def __init__(self, vertex_amount):
         self.vertex_amount = vertex_amount
         self.classes_amount = vertex_amount
-
-        self.position = []  # indexes --> deadlines
+        self.equivalence_class = []
+        self.rank = []
+        self.left_item = []
         for i in range(vertex_amount):
-            self.position.append(i)
+            self.equivalence_class.append(i)  # In the beginning all vertexes' eq. classes are themselves
+            self.rank.append(0)
+            self.left_item.append(i)
 
     def find(self, vert: int) -> int:
         """Returns the equivalence class (~parent) of vertex"""
 
-        while self.position[vert] != vert:
-            vert = self.position[vert]
+        if self.equivalence_class[vert] != vert:
+            self.equivalence_class[vert] = self.find(self.equivalence_class[vert])
 
-        return vert
+        return self.equivalence_class[vert]
 
     def union(self, vert1: int, vert2: int) -> None:
         """Merges vertex equivalence classes"""
@@ -22,10 +25,32 @@ class UnionFind:
         eq_class1 = self.find(vert1)  # int
         eq_class2 = self.find(vert2)  # int
 
-        left_class = min(eq_class1, eq_class2, key=lambda x: self.position[x])
-        right_class = max(eq_class2, eq_class1, key=lambda x: self.position[x])
+        bigger_class = max(eq_class1, eq_class2, key=lambda x: self.rank[x])
+        smaller_class = min(eq_class2, eq_class1, key=lambda x: self.rank[x])
 
-        self.position[right_class] = left_class
+        if self.rank[eq_class1] == self.rank[eq_class2]:
+            self.rank[eq_class1] += 1
+            self.rank[eq_class2] += 1
+
+        self.equivalence_class[smaller_class] = bigger_class
+
+        leftest_item = min(eq_class2, eq_class1, key=lambda x: self.left_item[x])
+
+        self.left_item[bigger_class] = leftest_item
+
+
+def greedy(tasks: list[list]) -> (int, int):
+    tasks.sort(key=lambda x: x[2], reverse=True)  # Sort tasks array by fine
+
+    result = []
+    total_fine = 0
+
+    for task, deadline, fine in tasks:
+        result.append(task)
+        if deadline < len(result):
+            total_fine += fine
+
+    return total_fine
 
 
 def make_plan(tasks: list[list]) -> (int, int):
@@ -45,10 +70,12 @@ def make_plan(tasks: list[list]) -> (int, int):
         deadline -= 1  # Deadlines = index + 1
 
         if result[deadline]:
-            deadline = tasks_complete.find(deadline) - 1  # Find the most left free day
+            eq_class = tasks_complete.find(deadline)  # Find the most left free day
+            deadline = tasks_complete.left_item[eq_class] - 1
             if deadline < 0:  # If we ruined the deadline --> we get fine
                 total_fine += fine
-                deadline = tasks_complete.find(tasks_amount - 1)  # Another equivalence class (at the end)
+                eq_class = tasks_complete.find(tasks_amount - 1)
+                deadline = tasks_complete.left_item[eq_class]  # Another equivalence class (at the end)
                 if result[deadline]:
                     deadline -= 1
 
