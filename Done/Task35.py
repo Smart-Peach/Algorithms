@@ -28,9 +28,8 @@ class UnionFind:
         bigger_class = max(eq_class1, eq_class2, key=lambda x: self.rank[x])
         smaller_class = min(eq_class2, eq_class1, key=lambda x: self.rank[x])
 
-        if self.rank[eq_class1] == self.rank[eq_class2]:
-            self.rank[eq_class1] += 1
-            self.rank[eq_class2] += 1
+        if self.rank[bigger_class] == self.rank[smaller_class]:
+            self.rank[bigger_class] += 1
 
         self.equivalence_class[smaller_class] = bigger_class
 

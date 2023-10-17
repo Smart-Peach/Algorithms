@@ -12,6 +12,5 @@ class Solution:
             if nums[present_ind] > able_steps:
                 able_steps = nums[present_ind]
 
-        if present_ind == finish_ind:
-            return True
-        return False
+        return present_ind == finish_ind
+
